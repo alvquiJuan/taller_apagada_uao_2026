@@ -13,6 +13,27 @@ echo "================================================"
 echo "  Configurando ambiente: LA GRAN APAGADA"
 echo "================================================"
 
+# Verificar e instalar dependencias necesarias
+echo "→ Verificando dependencias..."
+for cmd in zip unzip; do
+    if ! command -v $cmd &>/dev/null; then
+        echo "  ⚠️  '$cmd' no encontrado. Instalando..."
+        if command -v apt-get &>/dev/null; then
+            sudo apt-get install -y $cmd
+        elif command -v dnf &>/dev/null; then
+            sudo dnf install -y $cmd
+        elif command -v brew &>/dev/null; then
+            brew install $cmd
+        else
+            echo "  ❌ No se pudo instalar '$cmd' automáticamente."
+            echo "     Instálalo manualmente y vuelve a ejecutar el script."
+            exit 1
+        fi
+    else
+        echo "  ✅ $cmd OK"
+    fi
+done
+
 # -------------------------------------------------------------
 # ESTRUCTURA DE DIRECTORIOS (pre-existente, como escena)
 # -------------------------------------------------------------
